@@ -27,49 +27,51 @@ class SignupPage extends StatelessWidget {
           width: 40,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _registerText(),
-            const SizedBox(
-              height: 50,
-            ),
-            _fullNameField(context),
-            const SizedBox(
-              height: 20,
-            ),
-            _emailField(context),
-            const SizedBox(
-              height: 20,
-            ),
-            _passwordField(context),
-            const SizedBox(
-              height: 30,
-            ),
-            BasicAppButton(
-                onPressed: () async {
-                  var result = await sl<SignupUseCase>().call(
-                      params: CreateUserReq(
-                          fullName: _fullname.text.toString(),
-                          email: _email.text.toString(),
-                          password: _password.text.toString()));
-                  result.fold((l) {
-                    var snackbar = SnackBar(content: Text(l));
-                    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _registerText(),
+              const SizedBox(
+                height: 50,
+              ),
+              _fullNameField(context),
+              const SizedBox(
+                height: 20,
+              ),
+              _emailField(context),
+              const SizedBox(
+                height: 20,
+              ),
+              _passwordField(context),
+              const SizedBox(
+                height: 30,
+              ),
+              BasicAppButton(
+                  onPressed: () async {
+                    var result = await sl<SignupUseCase>().call(
+                        params: CreateUserReq(
+                            fullName: _fullname.text.toString(),
+                            email: _email.text.toString(),
+                            password: _password.text.toString()));
+                    result.fold((l) {
+                      var snackbar = SnackBar(content: Text(l));
+                      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                    },
+                        (r) => {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          const RootPage()),
+                                  (route) => false)
+                            });
                   },
-                      (r) => {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        const RootPage()),
-                                (route) => false)
-                          });
-                },
-                title: 'Create Account')
-          ],
+                  title: 'Create Account')
+            ],
+          ),
         ),
       ),
     );
@@ -122,7 +124,7 @@ class SignupPage extends StatelessWidget {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => const SigninPage()));
+                        builder: (BuildContext context) => SigninPage()));
               },
               child: const Text('Sign In'))
         ],
